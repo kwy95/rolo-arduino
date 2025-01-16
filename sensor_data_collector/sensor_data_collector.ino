@@ -11,6 +11,7 @@ void setup() {
   Serial.begin(baud);
   pinMode(sens[0], INPUT);
   pinMode(sens[1], INPUT);
+  establishContact();
 
   delay(1000);
 
@@ -47,4 +48,15 @@ void loop() {
       lastValue[i] = currentValue[i];
     }
   }
+}
+
+void establishContact() {
+  while (!Serial) continue;
+
+  while (Serial.available() <= 0 || Serial.read() != 65) {
+    Serial.print('A');  // send a capital A
+    delay(300);
+  }
+
+  Serial.flush();
 }

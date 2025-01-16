@@ -1,66 +1,50 @@
-const long baud = 115200;
-const unsigned long minPulse = 1000;
+const uint8_t sens[2] = { 2, 7 };
+bool midPulse[2] = { false, false };
+int lastValue[2];
+int currentValue[2];
+unsigned long timeStart[2];
+unsigned long diff[2];
 
-const uint8_t sen1 = 2;
-const uint8_t sen2 = 7;
-bool midPulse1 = false;
-bool midPulse2 = false;
-int lastValue1;
-int lastValue2;
-int currentValue1;
-int currentValue2;
-unsigned long currentTime;
-unsigned long timeStart1;
-unsigned long timeStart2;
-unsigned long diff1;
-unsigned long diff2;
+void setup() {
+  const long baud = 115200;
 
-void setup()
-{
   Serial.begin(baud);
-  pinMode(sen1, INPUT);
-  pinMode(sen2, INPUT);
+  pinMode(sens[0], INPUT);
+  pinMode(sens[1], INPUT);
 
   delay(1000);
-  lastValue1 = digitalRead(sen1);
-  lastValue2 = digitalRead(sen2);
+
+  lastValue[0] = digitalRead(sens[0]);
+  lastValue[1] = digitalRead(sens[1]);
   Serial.print("Started: ");
-  Serial.print(lastValue1);
+  Serial.print(lastValue[0]);
   Serial.print("; ");
-  Serial.println(lastValue2);
+  Serial.println(lastValue[1]);
 }
 
-void loop()
-{
-  currentValue1 = digitalRead(sen1);
-  currentValue2 = digitalRead(sen2);
+void loop() {
+  const int minPulse = 1000;
+  unsigned long currentTime;
+
+  currentValue[0] = digitalRead(sens[0]);
+  currentValue[1] = digitalRead(sens[1]);
   currentTime = micros();
 
-  if (currentValue1 != lastValue1) {
-    midPulse1 = !midPulse1;
-    if (midPulse1) {
-      timeStart1 = currentTime;
-    } else {
-      diff1 = currentTime - timeStart1;
-      if (diff1 >= minPulse) {
-        Serial.print("bike1: ");
-        Serial.println(diff1);
+  for (int i = 0; i < 2; i++) {
+    if (currentValue[i] != lastValue[i]) {
+      midPulse[i] = !midPulse[i];
+      if (midPulse[i]) {
+        timeStart[i] = currentTime;
+      } else {
+        diff[i] = currentTime - timeStart[i];
+        if (diff[i] >= minPulse) {
+          Serial.print("bike");
+          Serial.print(i);
+          Serial.print(": ");
+          Serial.println(diff[i]);
+        }
       }
+      lastValue[i] = currentValue[i];
     }
-    lastValue1 = currentValue1;
-  }
-
-  if (currentValue2 != lastValue2) {
-    midPulse2 = !midPulse2;
-    if (midPulse2) {
-      timeStart2 = currentTime;
-    } else {
-      diff2 = currentTime - timeStart2;
-      if (diff2 >= minPulse) {
-        Serial.print("bike2: ");
-        Serial.println(diff2);
-      }
-    }
-    lastValue2 = currentValue2;
   }
 }

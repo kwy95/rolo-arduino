@@ -21,10 +21,11 @@ void setup() {
 
   lastValue[0] = digitalRead(sens[0]);
   lastValue[1] = digitalRead(sens[1]);
-  Serial.print("\nStarted: ");
+  Serial.print("{Started: ");
   Serial.print(lastValue[0]);
   Serial.print("; ");
-  Serial.println(lastValue[1]);
+  Serial.print(lastValue[1]);
+  Serial.print("}");
 }
 
 void loop() {

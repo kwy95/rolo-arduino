@@ -1,6 +1,3 @@
-#define ARDUINOJSON_USE_LONG_LONG 1
-#include <ArduinoJson.h>
-
 const uint8_t sens[2] = { 2, 7 };
 bool midPulse[2] = { false, false };
 int lastValue[2];
@@ -32,8 +29,6 @@ void loop() {
   const char* currentTimeKey = "current_time";
   const unsigned long minPulse = 10000UL;
   unsigned long currentTime;
-  StaticJsonDocument<12> doc[2];
-  // StaticJsonDocument<24> doc[2];
 
   currentValue[0] = digitalRead(sens[0]);
   currentValue[1] = digitalRead(sens[1]);
@@ -47,9 +42,13 @@ void loop() {
       } else {
         diff[i] = currentTime - timeStart[i];
         if (diff[i] >= minPulse) {
-          // doc[i][currentTimeKey] = currentTime;
-          doc[i][bikeNames[i]] = diff[i];
-          serializeJson(doc[i], Serial);
+          Serial.print("{");
+          Serial.print(i);
+          Serial.print(";");
+          Serial.print(diff[i]);
+          // Serial.print(";");
+          // Serial.print(currentTime);
+          Serial.print("}");
         }
       }
       lastValue[i] = currentValue[i];
@@ -60,7 +59,7 @@ void loop() {
 void establishContact() {
   while (!Serial) continue;
 
-  while (Serial.available() <= 0 || Serial.read() != 65) {
+  while (Serial.available() <= 0 || Serial.read() != 'A') {
     Serial.print('A');  // send a capital A
     delay(300UL);
   }

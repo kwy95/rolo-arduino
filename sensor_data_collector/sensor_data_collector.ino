@@ -46,8 +46,8 @@ void loop() {
           Serial.print(i);
           Serial.print(";");
           Serial.print(diff[i]);
-          // Serial.print(";");
-          // Serial.print(currentTime);
+          Serial.print(";");
+          Serial.print(currentTime);
           Serial.print("}");
         }
       }

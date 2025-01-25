@@ -16,8 +16,8 @@ void setup() {
 
   delay(1000UL);
 
-  lastValue[0] = digitalRead(sens[0]);
-  lastValue[1] = digitalRead(sens[1]);
+  lastValue[0] = 1;
+  lastValue[1] = 1;
   Serial.print("{Started: ");
   Serial.print(lastValue[0]);
   Serial.print("; ");

@@ -18,11 +18,11 @@ void setup() {
 
   lastValue[0] = 1;
   lastValue[1] = 1;
-  Serial.print("{Started: ");
-  Serial.print(lastValue[0]);
-  Serial.print("; ");
-  Serial.print(lastValue[1]);
-  Serial.print("}");
+  // Serial.print("{Started: ");
+  // Serial.print(lastValue[0]);
+  // Serial.print("; ");
+  // Serial.print(lastValue[1]);
+  // Serial.print("}");
 }
 
 void loop() {
